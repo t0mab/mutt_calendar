@@ -2,7 +2,7 @@
 
 Command line tool to display calendar in mutt.
 
-# Command line usge
+# Command line usage
 ./cal.py filename.ics
 
 # Mutt usage
