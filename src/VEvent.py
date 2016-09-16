@@ -4,14 +4,23 @@
 
 import vobject
 
+###
+# Class to manage calendar events.
+#
+# This is an abstract class with only static methods.
+###
 class VEvent:
     ###
-    # Set participation status (RFC 5545) :
-    # - NEEDS-ACTION
-    # - ACCEPTED
-    # - DECLINED
-    # - TENTATIVE
-    # - DELEGATED
+    # Set participation status (RFC 5545).
+    #
+    # @param vevent The event to modify.
+    # @param email The user email for which the participation is set.
+    # @param parstat The participation state :
+    #   - NEEDS-ACTION
+    #   - ACCEPTED
+    #   - DECLINED
+    #   - TENTATIVE
+    #   - DELEGATED
     ###
     def set_partstat(
             vevent,
@@ -50,6 +59,11 @@ class VEvent:
 #        vcalendar.vevent.add('summary').value = summary
 #        vcalendar.vevent.add('dtstart').value = datetime.datetime()
 
+    ###
+    # Print a summary of the provided event.
+    #
+    # @param vevent The event to print.
+    ###
     def print(
             vevent):
         location = vevent.getChildValue("location")
