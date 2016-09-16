@@ -81,7 +81,7 @@ class VEvent:
             start_day = dtstart.strftime("%d/%m/%Y")
             end_day = dtend.strftime("%d/%m/%Y")
             end_another_day = ""
-            event_str += " - [" + start_day + "] " + dtstart.strftime("%H:%M")
+            event_str += "\n[" + start_day + "] " + dtstart.strftime("%H:%M")
             if(start_day != end_day):
                 end_another_day = "[" + end_day + "] "
             event_str += \
