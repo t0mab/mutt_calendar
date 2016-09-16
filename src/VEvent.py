@@ -15,10 +15,12 @@ class VEvent:
     ###
     def set_partstat(
             vevent,
+            email,
             partstat):
-        # TODO check for each participant
-        #ev.attendee.PARTSTAT_param = [ 'ACCEPTED' ]
-        vevent.attendee.PARTSTAT_param = [ partstat ]
+        email_str = "mailto:"+email
+        for attendee in vevent.attendee_list:
+            if(attendee.value == email_str):
+                vevent.attendee.PARTSTAT_param = [ partstat ]
 
     ###
     # Return the uid of the given VEvent.
