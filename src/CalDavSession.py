@@ -4,7 +4,17 @@
 
 import requests
 
+###
+# Class that manage the CalDav connection with the server.
+###
 class CalDavSession:
+    ###
+    # Initialize the CalDav parameters but does not connect to the server.
+    #
+    # @param user The user login.
+    # @param password The user password.
+    # @param url The base url to connect to.
+    ###
     def __init__(
             self,
             user,
@@ -15,11 +25,22 @@ class CalDavSession:
         self.session.auth = (user, password)
         self.url = url
 
+    ###
+    # Close the CalDav connection.
+    ###
     def close(
             self):
 
         self.session.close()
 
+    ###
+    # Get the requested event from the server.
+    #
+    # @param eventid The id of the event to return.
+    #
+    # @return The requested event text. Or an empty string if the event is not
+    # found.
+    ###
     def get_event(
         self,
         eventid):
@@ -34,6 +55,15 @@ class CalDavSession:
 
         return value
 
+    ###
+    # Creates or updates the event on the server.
+    #
+    # @param event The event text.
+    # @param eventid The event id.
+    #
+    # @return True if the event is succefully created or modified. False,
+    # otherwise.
+    ###
     def set_event(
         self,
         event,
@@ -47,11 +77,26 @@ class CalDavSession:
         return (result.status_code == 201
                 or result.status_code == 204)
 
+    ###
+    # Delete the requested event.
+    #
+    # @param eventid The veznt id.
+    #
+    # @return True if the event is succefully deleted. False, otherwise.
+    ###
     def delete_event(
             ):
-        # DELETE url/event.ics
+        # TODO DELETE url/event.ics
         pass
 
+    ###
+    # List the calendar matching given date interval.
+    #
+    # @param start_date The interval start date.
+    # @param end_date The interval end date.
+    #
+    # @return The list of corresponding events. An empty list if none was found.
+    ###
     def list_calendar_collections(
             ):
 #        Example:
