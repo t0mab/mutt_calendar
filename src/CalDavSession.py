@@ -85,6 +85,7 @@ class CalDavSession:
     # @return True if the event is succefully deleted. False, otherwise.
     ###
     def delete_event(
+            self
             ):
         # TODO DELETE url/event.ics
         pass
@@ -98,6 +99,7 @@ class CalDavSession:
     # @return The list of corresponding events. An empty list if none was found.
     ###
     def list_calendar_collections(
+            self
             ):
 #        Example:
 #            <C:calendar-home-set xmlns:D="DAV:"
@@ -105,6 +107,59 @@ class CalDavSession:
 #                <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
 #            </C:calendar-home-set>
         pass
+
+    ###
+    # Get events from the server corresponding to the requested interval.
+    #
+    # @param start The start date of the time interval.
+    # @param end The end date of the time interval.
+    #
+    # @return The events for this interval. Or an empty string if no event
+    # correspond.
+    ###
+    def get_events(
+            self,
+            start,
+            end):
+
+        value = ""
+        caldav_content_type = 'text/xml; charset="utf-8"'
+
+        method = "REPORT"
+        url = self.url
+        headers = {
+                "Content-Type": "application/xml; charset=\"utf-8\"",
+                "Prefer": "return-minimal",
+                "Depth": "1"
+        }
+        data = '''
+	    <?xml version="1.0" encoding="utf-8" ?>
+	    <C:calendar-query
+		    xmlns:D="DAV:"
+		    xmlns:C="urn:ietf:params:xml:ns:caldav">
+		<D:prop>
+                    <D:getetag/>
+		    <C:calendar-data />
+		</D:prop>
+		<C:filter>
+		    <C:comp-filter name="VCALENDAR">
+			<C:comp-filter name="VEVENT">
+			    <C:time-range
+                                start="''' + start +  '''"
+				  end="''' + end + '''" />
+			</C:comp-filter>
+		    </C:comp-filter>
+		</C:filter>
+	    </C:calendar-query>'''
+
+        request = requests.Request(method, url, data=data, headers=headers)
+        result = self.session.send(self.session.prepare_request(request))
+
+        if(result.status_code == 207
+                and result.headers['content-type'] == caldav_content_type):
+            value = result.text
+
+        return value
 
 # N.B. create a new calendar via MKCALENDAR via DAV:displayname (exemple page
 # 24)
