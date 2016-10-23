@@ -71,6 +71,7 @@ class VEvent:
         dtstart = vevent.getChildValue("dtstart")
         dtend = vevent.getChildValue("dtend")
         organizer = vevent.getChildValue("organizer")
+        attendee_list = vevent.getChildValue("attendee")
 
         event_str = "\n"
         if(location):
@@ -89,10 +90,14 @@ class VEvent:
 
         event_str += "\n\n"
         if(organizer):
-            event_str += "[ORGANIZER]: " + vevent.organizer.CN_param + "\n"
+            event_str += vevent.organizer.CN_param + " [ORGANIZER]\n"
 
-        for attendee in vevent.attendee_list:
-            event_str += "[" + attendee.PARTSTAT_param + "]: " \
-                + attendee.CN_param + "\n"
+        if attendee_list:
+            attendee_list_sorted = sorted(
+                    vevent.attendee_list,
+                    key = lambda attendee: attendee.CN_param)
+            for attendee in attendee_list_sorted:
+                event_str += attendee.CN_param \
+                    + " [" + attendee.PARTSTAT_param + "]\n"
 
         print(event_str)
